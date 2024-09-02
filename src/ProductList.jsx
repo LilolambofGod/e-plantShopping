@@ -1,11 +1,20 @@
 import React, { useState,useEffect } from 'react';
-import './ProductList.css'
-import CartItem from './CartItem'
-import addItem from './CartSlice';
+import {useDispatch} from 'react-redux';
+import './ProductList.css';
+import {addItem} from './CartSlice';
 
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
-    
+    const dispatch = useDispatch();
+    const [addedToCart, setAddedToCart] = useState({});
+
+    const handleAddToCart = (product) => {
+    dispatch(addItem(product));
+    setAddedToCart((prevState) => ({
+      ...prevState,
+      [product.name]: true, // Set the product name as the key and its value to true
+    }));
+  };
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -246,16 +255,6 @@ function ProductList() {
     const handleContinueShopping = (e) => {
     e.preventDefault();
     setShowCart(false);
-  };
-
-    const [addedToCart, setAddedToCart] = useState({});
-  
-    const handleAddToCart = (product) => {
-    dispatch(addItem(product));
-    setAddedToCart((prevState) => ({
-      ...prevState,
-      [product.name]: true, // Set the product name as the key and its value to true
-    }));
   };
 
     return (
